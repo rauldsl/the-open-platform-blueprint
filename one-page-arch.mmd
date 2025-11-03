@@ -1,0 +1,39 @@
+flowchart TB
+  subgraph Users
+    Devs["Stream-aligned Dev Teams"]
+  end
+
+  subgraph Platform["Platform Engineering (Kubernetes Foundation)"]
+    direction TB
+    K8s["Kubernetes Control Plane\n(HA API, etcd, controllers)"]
+    Workers["Worker Node Pools\n(app, system, gpu)"]
+    GitOps["GitOps (ArgoCD/Flux)"]
+    CNI["CNI (Calico / Cilium)"]
+    Ingress["Ingress + LB"]
+    CSI["CSI Storage (EBS / Longhorn / Rook)"]
+    Observability["Prometheus / Grafana / Jaeger / Logging"]
+    Security["OPA/Gatekeeper, Image Scanning, Vault"]
+    Autoscale["Cluster Autoscaler / HPA"]
+  end
+
+  subgraph Infra["Infrastructure Layer"]
+    Cloud["Cloud Provider / On-prem Network & Storage"]
+    LB["External Load Balancer / MetalLB"]
+    Storage["Block Storage / Distributed Storage"]
+    DNS["DNS & NTP"]
+  end
+
+  Devs -->|push manifests / PRs| GitOps
+  GitOps -->|reconcile| K8s
+  K8s --> Workers
+  K8s --> CNI
+  K8s --> CSI
+  K8s --> Observability
+  K8s --> Security
+  K8s --> Autoscale
+  Infra --> K8s
+  Infra --> Ingress
+  Ingress --> Workers
+  LB --> Ingress
+  Storage --> CSI
+  DNS --> K8s
