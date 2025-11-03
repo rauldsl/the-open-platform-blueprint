@@ -4,7 +4,7 @@ set -euo pipefail
 CONTROL_FIRST="10.0.0.10"
 CONTROL_IPS=("10.0.0.10" "10.0.0.11" "10.0.0.12")
 WORKER_IPS=("10.0.0.20" "10.0.0.21")
-SSH_USER="ubuntu"
+SSH_USER="ansible"
 SSH_KEY="~/.ssh/id_rsa"
 
 function remote() {
